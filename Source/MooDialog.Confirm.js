@@ -27,8 +27,8 @@ MooDialog.Confirm = new Class({
 			self = this;
 
 		var buttons = [
-			{fn: fn || emptyFn, txt: this.options.okText},
-			{fn: fn1 || emptyFn, txt: this.options.cancelText}
+			{ fn: fn || emptyFn, txt: this.options.okText },
+			{ fn: fn1 || emptyFn, txt: this.options.cancelText }
 		].map(function(button){
 			return new Element('button', {
 				events: {
@@ -42,14 +42,16 @@ MooDialog.Confirm = new Class({
 		});
 
 		this.setContent(
-			new Element('p.' + this.options.textPClass, {text: msg}),
-			new Element('div.buttons').adopt(buttons)
+			new Element('p', { 'class': this.options.textPClass, text: msg }),
+			new Element('div', { 'class': 'buttons' }).adopt(buttons)
 		);
-		if (this.options.autoOpen) this.open();
+		if (this.options.autoOpen)
+			this.open();
 
-		if(this.options.focus) this.addEvent('show', function(){
-			buttons[1].focus();
-		});
+		if(this.options.focus)
+			this.addEvent('show', function(){
+				buttons[1].focus();
+			});
 
 	}
 });

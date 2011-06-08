@@ -45,30 +45,30 @@ var MooDialog = new Class({
 	initialize: function(options){
 		this.setOptions(options);
 		this.options.inject = this.options.inject || document.body;
-		options = this.options;
 
-		var wrapper = this.wrapper = new Element('div.' + options['class'].replace(' ', '.')).inject(options.inject);
-		this.content = new Element('div.content').inject(wrapper);
+		this.wrapper = new Element('div', { 'class': this.options['class'].replace(' ', '.') }).inject(this.options.inject);
+		this.content = new Element('div', { 'class': 'content' }).inject(this.wrapper);
 
-		if (options.title){
-			this.title = new Element('div.title').set('text', options.title).inject(wrapper);
-			wrapper.addClass('MooDialogTitle');
+		if (this.options.title){
+			this.title = new Element('div', {'class': 'title', text: this.options.title }).inject(this.wrapper);
+			this.wrapper.addClass('MooDialogTitle');
 		}
 
-		if (options.closeButton){
-			this.closeButton = new Element('a.close', {
+		if (this.options.closeButton){
+			this.closeButton = new Element('a', {
+				'class': 'close',
 				events: {click: this.close.bind(this)}
-			}).inject(wrapper);
+			}).inject(this.wrapper);
 		}
 
 
 		/*<ie6>*/// IE 6 scroll
-		if ((options.scroll && Browser.ie6) || options.forceScroll){
-			wrapper.setStyle('position', 'absolute');
-			var position = wrapper.getPosition(options.inject);
+		if ((this.options.scroll && Browser.ie6) || this.options.forceScroll){
+			this.wrapper.setStyle('position', 'absolute');
+			var position = this.wrapper.getPosition(this.options.inject);
 			window.addEvent('scroll', function(){
 				var scroll = document.getScroll();
-				wrapper.setPosition({
+				this.wrapper.setPosition({
 					x: position.x + scroll.x,
 					y: position.y + scroll.y
 				});
@@ -76,29 +76,34 @@ var MooDialog = new Class({
 		}
 		/*</ie6>*/
 
-		if (options.useEscKey){
+		if (this.options.useEscKey){
 			// Add event for the esc key
 			document.addEvent('keydown', function(e){
-				if (e.key == 'esc') this.close();
+				if (e.key == 'esc')
+					this.close();
 			}.bind(this));
 		}
 
 		this.addEvent('hide', function(){
-			if (options.destroyOnHide) this.destroy();
+			if (this.options.destroyOnHide)
+				this.destroy();
 		}.bind(this));
 
-		this.fireEvent('initialize', wrapper);
+		this.fireEvent('initialize', this.wrapper);
 	},
 
 	setContent: function(){
 		var content = Array.from(arguments);
-		if (content.length == 1) content = content[0];
+		if (content.length == 1)
+			content = content[0];
 
 		this.content.empty();
 
 		var type = typeOf(content);
-		if (['string', 'number'].contains(type)) this.content.set('text', content);
-		else this.content.adopt(content);
+		if (['string', 'number'].contains(type))
+			this.content.set('text', content);
+		else
+			this.content.adopt(content);
 
 		this.fireEvent('contentChange', this.content);
 

@@ -31,14 +31,16 @@ MooDialog.Alert = new Class({
 		});
 
 		this.setContent(
-			new Element('p.' + this.options.textPClass, {text: msg}),
-			new Element('div.buttons').adopt(okButton)
+			new Element('p', { 'class': this.options.textPClass, text: msg }),
+			new Element('div', { 'class': 'buttons' }).adopt(okButton)
 		);
-		if (this.options.autoOpen) this.open();
+		if (this.options.autoOpen)
+			this.open();
 
-		if (this.options.focus) this.addEvent('show', function(){
-			okButton.focus()
-		});
+		if (this.options.focus)
+			this.addEvent('show', function(){
+				okButton.focus()
+			});
 
 	}
 });

@@ -28,6 +28,7 @@ MooDialog.IFrame = new Class({
 				scrolling: this.options.useScrollBar ? 'auto' : 'no'
 			})
 		);
-		if (this.options.autoOpen) this.open();
+		if (this.options.autoOpen)
+			this.open();
     }
 });
